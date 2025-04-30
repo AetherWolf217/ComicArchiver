@@ -12,6 +12,14 @@ Start with the webcomic Schlock Mercenary.
 import time
 import urllib.request
 from bs4 import BeautifulSoup
+import re
+import requests
+import sys
+
+def debug_print(variable_name, variable):
+    if debug:
+        print ("***{} is [{}].".format(variable_name, variable))
+    
 
 def save_image (page_soup,download_location):
     """
@@ -19,21 +27,48 @@ def save_image (page_soup,download_location):
     Saves it into the folder for the current year/count.
     Hundreds are used where a year is not readily available.
     """
-    if debug:
-        print ("***Saving Image from: " + str(page_soup)[:100] + " to: " \
-           + str(download_location))
+    # Get the image tag
+    img_wrapper = str(page_soup.find("div", {"class":"strip-image-wrapper"}))
 
+    # Get the source location
+    re_pattern = '<img src=".*"/>'
+    img_node = re.search(re_pattern, img_wrapper).group()
+    #debug_print("img_node", img_node)
+
+    img_source = "https://www.schlockmercenary.com" + img_node[10:-3]
+    debug_print("img_source", img_source)
+
+    re_pattern = '/schlock.*jpg'
+    img_name = re.search(re_pattern,img_source)
+    if None is img_name:
+        print ("keep working on your regex")
+        sys.exit()
+    else:
+        img_name = img_name.group()[1:]
+    debug_print("img_name", img_name)
+    
+    #Hold off on doing the folders at first just to get the base downloader working.
+    #re_pattern = '/schlock.*jpg'
+    #download_year = re.search(re_pattern,img_node).group()[8:-8]
+
+    #if debug:
+    #   print ("***download_year is [" + download_year + "].")
+
+    img_data = requests.get(img_source).content
+    with open(download_location + '/' + img_name, 'wb') as handler:
+        handler.write(img_data)
+    
 def get_next_page (page_soup):
     """
     Takes in the page being currently processed and returns the URL in string
     form.  Returns None if not found.
     """
 
-    if debug:
-        print ("***Getting next page from: " + str(page_soup)[:100])
-
     #TODO Pull the next page out of the html
     next_url = page_soup
+
+    debug_print("next_url", next_url)
+    
     next_url = None
     return next_url
 
@@ -55,7 +90,10 @@ def archive_comic(starting_url, download_location):
         with urllib.request.urlopen(current_url) as response:
             html = response.read()
 
-        page_soup = BeautifulSoup(html)
+        page_soup = BeautifulSoup(str(html), 'html.parser')
+
+        #if debug:
+        #    print ("Soup is " + str(page_soup))
 
         save_image(page_soup, download_location)
         current_url = get_next_page(page_soup)
