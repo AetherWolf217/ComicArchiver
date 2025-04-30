@@ -22,9 +22,6 @@ def save_image (page_soup,download_location):
     if debug:
         print ("***Saving Image from: " + str(page_soup)[:100] + " to: " \
            + str(download_location))
-    
-    
-
 
 def get_next_page (page_soup):
     """
@@ -59,7 +56,7 @@ def archive_comic(starting_url, download_location):
             html = response.read()
 
         page_soup = BeautifulSoup(html)
-        
+
         save_image(page_soup, download_location)
         current_url = get_next_page(page_soup)
 
