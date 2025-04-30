@@ -13,29 +13,30 @@ import time
 import urllib.request
 from bs4 import BeautifulSoup
 
-def save_image (page_html,download_location):
+def save_image (page_soup,download_location):
     """
     Downloads the image from the current page.
     Saves it into the folder for the current year/count.
     Hundreds are used where a year is not readily available.
     """
     if debug:
-        print ("***Saving Image from: " + str(page_html[:100]) + " to: " \
+        print ("***Saving Image from: " + str(page_soup)[:100] + " to: " \
            + str(download_location))
-    download_location = None
+    
+    
 
 
-def get_next_page (page_html):
+def get_next_page (page_soup):
     """
     Takes in the page being currently processed and returns the URL in string
     form.  Returns None if not found.
     """
 
     if debug:
-        print ("***Getting next page from: " + str(page_html[:100]))
+        print ("***Getting next page from: " + str(page_soup)[:100])
 
-    #Pull the next page out of the html
-    next_url = page_html
+    #TODO Pull the next page out of the html
+    next_url = page_soup
     next_url = None
     return next_url
 
@@ -53,14 +54,14 @@ def archive_comic(starting_url, download_location):
     repetitions = 3
 
     while None is not current_url and 0 < repetitions:
-        #TODO: refactor save_image and current_url to use the HTML pulled from
-        # urllib so you only have to pull the HTML once.
 
         with urllib.request.urlopen(current_url) as response:
             html = response.read()
 
-        save_image(html, download_location)
-        current_url = get_next_page(html)
+        page_soup = BeautifulSoup(html)
+        
+        save_image(page_soup, download_location)
+        current_url = get_next_page(page_soup)
 
         repetitions -= 1
 
