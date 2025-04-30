@@ -1,1 +1,1 @@
-pylint --rcfile google_style_pylintrc main.py
+pylint --rcfile google_style_pylintrc src/main.py
