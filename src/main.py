@@ -64,12 +64,19 @@ def get_next_page (page_soup):
     form.  Returns None if not found.
     """
 
-    #TODO Pull the next page out of the html
-    next_url = page_soup
+    #Pull the relevant element out of the page
+    fragment = str(page_soup.find("a", {"class":"next-strip"}))
 
-    debug_print("next_url", next_url)
+    #Extract the URL fragment from the element
+    re_pattern = '/.*"'
     
-    next_url = None
+    next_fragment = re.search(re_pattern, fragment).group()[1:-1]
+    debug_print ("next_fragment", next_fragment)
+
+    # Strip extra characters
+    next_url = "https://schlockmercenary.com/" + next_fragment
+    debug_print("next_url", next_url)
+
     return next_url
 
 def archive_comic(starting_url, download_location):
@@ -86,6 +93,7 @@ def archive_comic(starting_url, download_location):
     repetitions = 3
 
     while None is not current_url and 0 < repetitions:
+        debug_print("Number remaining", repetitions)
 
         with urllib.request.urlopen(current_url) as response:
             html = response.read()
