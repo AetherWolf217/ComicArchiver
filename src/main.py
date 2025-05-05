@@ -18,8 +18,7 @@ import sys
 
 def debug_print(variable_name, variable):
     if debug:
-        print ("***{} is [{}].".format(variable_name, variable))
-    
+        print (f"***{variable_name} is [{variable}].")
 
 def save_image (page_soup,download_location):
     """
@@ -46,8 +45,8 @@ def save_image (page_soup,download_location):
     else:
         img_name = img_name.group()[1:]
     debug_print("img_name", img_name)
-    
-    #Hold off on doing the folders at first just to get the base downloader working.
+
+    #Hold off on doing the folders at first.
     #re_pattern = '/schlock.*jpg'
     #download_year = re.search(re_pattern,img_node).group()[8:-8]
 
@@ -57,7 +56,7 @@ def save_image (page_soup,download_location):
     img_data = requests.get(img_source).content
     with open(download_location + '/' + img_name, 'wb') as handler:
         handler.write(img_data)
-    
+
 def get_next_page (page_soup):
     """
     Takes in the page being currently processed and returns the URL in string
@@ -69,7 +68,7 @@ def get_next_page (page_soup):
 
     #Extract the URL fragment from the element
     re_pattern = '/.*"'
-    
+
     next_fragment = re.search(re_pattern, fragment).group()[1:-1]
     debug_print ("next_fragment", next_fragment)
 
