@@ -97,4 +97,5 @@ def main():
     
     SchlockArchiver.archive_comic(download_to)
     
-main()
+if "__main__" == __name__: 
+    main()
