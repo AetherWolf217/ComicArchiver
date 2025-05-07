@@ -12,6 +12,8 @@ Code quality:
 - Error handling choke points
 -- Web fetches
 -- File read/writes
+- Replace the console output with actual logs.
+-- Probably should have each archiver run a separate log file.
 - Any reasonable optimization?
 
 Longer term:
