@@ -1,0 +1,21 @@
+Implement folder checking:
+- Config.properties for local storage locations for each comic's folder.
+- Code to check where the archiver left off last time and return either the last downloaded URL or the next target.
+-- That can be fed into the get_next loop.
+
+Factory pattern:
+- Build an archiver for a second webcomic.
+- Build a factory that can run both archivers.  This will be the engine core.
+
+Code quality:
+- Frequent linting (comes under language training as well).
+- Error handling choke points
+-- Web fetches
+-- File read/writes
+- Any reasonable optimization?
+
+Longer term:
+- Multithread the archivers so I can be updating n archives simultaneously?
+-- What size do I want n to be?
+-- Error handling: an error needs to kill one archiver with good error messages,
+    but not kill the entire multitask structure.
