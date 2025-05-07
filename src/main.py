@@ -17,6 +17,6 @@ def main():
     """
     download_to = "downloads"
     
-    SchlockArchiver.SchlockArchiver.archive_comic(download_to)
+    SchlockArchiver.archive_comic(download_to)
     
 main()
