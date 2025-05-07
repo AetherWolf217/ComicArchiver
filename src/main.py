@@ -9,7 +9,7 @@ Designed for use with single-image comics.
 Start with the webcomic Schlock Mercenary.
 """
 
-import archiver.SchlockArchiver
+import SchlockArchiver
 
 def main():
     """
@@ -17,6 +17,6 @@ def main():
     """
     download_to = "downloads"
     
-    archiver.SchlockArchiver.archive_comic(download_to)
+    SchlockArchiver.SchlockArchiver.archive_comic(download_to)
     
 main()
