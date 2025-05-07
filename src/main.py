@@ -17,8 +17,8 @@ def main():
     Test function for the webcomic archiver.
     """
     download_to = "downloads"
-    
+
     SchlockArchiver.archive_comic(download_to)
     CVRPGArchiver.archive_comic(download_to)
-    
+
 main()
