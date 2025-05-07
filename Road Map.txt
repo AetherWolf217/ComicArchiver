@@ -1,11 +1,11 @@
+Factory pattern:
+x- Build an archiver for a second webcomic.
+- Build a factory that can run both archivers.  This will be the engine core.
+
 Implement folder checking:
 - Config.properties for local storage locations for each comic's folder.
 - Code to check where the archiver left off last time and return either the last downloaded URL or the next target.
 -- That can be fed into the get_next loop.
-
-Factory pattern:
-- Build an archiver for a second webcomic.
-- Build a factory that can run both archivers.  This will be the engine core.
 
 Code quality:
 - Frequent linting (comes under language training as well).
