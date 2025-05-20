@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import requests
 import sys
+import os
 
 import logger
 
@@ -27,7 +28,7 @@ def save_image (page_soup,download_location):
     logger.debug_print("img_source", img_source)
 
     # Use the image file to calculate the file name for downloading.
-    re_pattern = '/comics/[a-z]*[0-9]*\.gif'
+    re_pattern = "/comics/[a-z]*[0-9]*\.gif"
     img_name = re.search(re_pattern,img_source)
     if None is img_name:
         print ("keep working on your regex")
@@ -37,11 +38,11 @@ def save_image (page_soup,download_location):
     logger.debug_print("img_name", img_name)
 
     # Assemble the fully qualified path for the downloaded image.
-    full_download_path = download_location + '/' + img_name
+    full_download_path = download_location + "/" + img_name
     logger.debug_print("full_download_path", full_download_path)
 
     img_data = requests.get(img_source).content
-    with open(full_download_path, 'wb') as handler:
+    with open(full_download_path, "wb") as handler:
         handler.write(img_data)
 
 def get_next_page (page_soup):
@@ -84,20 +85,32 @@ def archive_comic(download_location):
         with urllib.request.urlopen(current_url) as response:
             html = response.read()
 
-        page_soup = BeautifulSoup(str(html), 'html.parser')
+        page_soup = BeautifulSoup(str(html), "html.parser")
 
-        save_image(page_soup, download_location)
+        # Use the URL to define the folder to put the comic image into.
+        re_pattern = "[0-9]{4}"
+        current_year = re.search(re_pattern, current_url).group()
+        logger.debug_print("current_year", current_year)
+        save_location = download_location + "/" + current_year
+
+
+        # Create the folder and save into it.
+        os.makedirs(save_location, exist_ok=True)
+        save_image(page_soup, save_location)
+
+        # Set up for the next page.
         current_url = get_next_page(page_soup)
-
         repetitions -= 1
 
         # Pause for a moment to keep the load on the server low.
         time.sleep(5)
 
 def main():
-    download_to = "downloads"
-    
+    logger.debug_print("current working directory",  os.getcwd())
+
+    download_to = os.getcwd() + "/downloads"
+
     archive_comic(download_to)
-    
-if "__main__" == __name__: 
+
+if "__main__" == __name__:
     main()
