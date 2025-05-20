@@ -1,3 +1,7 @@
+"""
+Utility functions to download the CVRPG webcomic.
+"""
+
 import time
 import urllib.request
 from bs4 import BeautifulSoup
@@ -28,7 +32,7 @@ def save_image (page_soup,download_location):
     logger.debug_print("img_source", img_source)
 
     # Use the image file to calculate the file name for downloading.
-    re_pattern = "/comics/[a-z]*[0-9]*\.gif"
+    re_pattern = r"/comics/[a-z]*[0-9]*.gif"
     img_name = re.search(re_pattern,img_source)
     if None is img_name:
         print ("keep working on your regex")
@@ -41,7 +45,7 @@ def save_image (page_soup,download_location):
     full_download_path = download_location + "/" + img_name
     logger.debug_print("full_download_path", full_download_path)
 
-    img_data = requests.get(img_source).content
+    img_data = requests.get(img_source, timeout=5).content
     with open(full_download_path, "wb") as handler:
         handler.write(img_data)
 

@@ -37,7 +37,7 @@ def save_image (page_soup,download_location):
     #re_pattern = '/schlock.*jpg'
     #download_year = re.search(re_pattern,img_node).group()[8:-8]
 
-    img_data = requests.get(img_source).content
+    img_data = requests.get(img_source,timeout=5).content
     with open(download_location + '/' + img_name, 'wb') as handler:
         handler.write(img_data)
 
